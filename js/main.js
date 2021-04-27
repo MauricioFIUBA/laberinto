@@ -1,39 +1,38 @@
 let canvas = null;
-const mazeWidth = 600;
-const mazeHeight = 600;
+
+var division = 2.5;
+var mazeWidth = 0;
+var mazeHeight = 0;
 
 let maze = null;
-let builderTag = 'DFS';
+let builderTag = 'null';
+
+var test = 0;
 
 const builders = {
   DYC: MazeBuilderByDivideAndConquer,
   DFS: MazeBuilderByDFS
 };
 
-let title = null;
-let heightLabel = null; 
 let heightInput = null;
-let widthLabel = null;
 let widthInput = null;
-let builderLabel = null;
 let builderSelect = null;
 
-let uploadLabel = null
 let uploadInput = null;
 
-function chooseBuilder() {
-  builderTag = builderSelect.value();
+function chooseBuilder(value) {
+  builderTag = value;
 }
 
-function buildMaze() {
+function buildMaze(mazeWidth, mazeHeight) {
   const [width, height] = [
-    parseInt(widthInput.value() || '10'),
-    parseInt(heightInput.value() || '10')
+    parseInt(widthInput.value || '10'),
+    parseInt(heightInput.value || '10')
   ];
   const selectedBuilder = builders[builderTag];
   if(selectedBuilder) {
     console.log('Building...')
-    maze = new Maze({ width, height }, selectedBuilder);
+    maze = new Maze({ width, height }, selectedBuilder, AStarMazeSolver, { mazeWidth, mazeHeight });
   } else {
     alert('Builder not implemented');
   }
@@ -41,7 +40,7 @@ function buildMaze() {
 
 function solveMaze(mazeGridRepr) {
   console.log('Solving...')
-  maze = new Maze(mazeGridRepr, null, AStarMazeSolver);
+  // maze = new Maze(mazeGridRepr, null, AStarMazeSolver);
 }
 
 function downloadMaze() {
@@ -58,49 +57,58 @@ function processFile(file) {
   solveMaze(JSON.parse(mazeGridJson));
 }
 
+function buttonFunction(){
+  var innerHTMLString = '<h1> I am H1 </h1>';
+  var container = document.querySelector('.opciones .finales')
+
+  container.classList.add('pre-animation');
+  document.getElementById("download-text").innerHTML = '<button id="download-text">Texto</button>';
+  document.getElementById("download-image").innerHTML = '<button id="download-image">Imagen</button>';
+  setTimeout(function(){
+      container.classList.remove('pre-animation');
+      // alert('esto tendria que tardar');
+  },100);
+
+
+
+}
+
+function windowResized() {
+  mazeWidth = windowWidth / division
+  mazeHeight = windowWidth / division
+  resizeCanvas(mazeWidth, mazeHeight  );
+}
+
 function setup() {
-  frameRate(25);
+  mazeWidth = windowWidth / division;
+  mazeHeight = windowWidth / division;
+  frameRate(24);
 
-  title = createElement('h2', 'Maze Generator');
-  heightLabel = createElement('label', 'Height (default = 10)');
-  heightInput = createInput();
-  widthLabel = createElement('label', 'Width (default = 10)');
-  widthInput = createInput();
-  builderLabel = createElement('label', 'builderorithm (default = DFS)');
-  builderSelect = createSelect();
+  heightInput = document.getElementById('alto')
 
-  title.position(mazeWidth + 50, 20);
+  widthInput = document.getElementById('ancho')
 
-  heightLabel.position(mazeWidth + 50, 80);
-  heightInput.position(mazeWidth + 50, 100);
+  builderTag = document.getElementById('tipoDeAlgoritmo').value; 
 
-  widthLabel.position(mazeWidth + 50, 130);
-  widthInput.position(mazeWidth + 50, 150);
-  
-  builderLabel.position(mazeWidth + 50, 180);
-  builderSelect.position(mazeWidth + 50, 200);
-  builderSelect.option('DFS');
-  builderSelect.option('DYC');
-  builderSelect.changed(chooseBuilder);
+  document.getElementById('start').onclick = function() {
+    buildMaze(mazeWidth, mazeHeight);
+  };
 
-  const start = createButton('Start');
-  start.position(mazeWidth + 50, 230);
-  start.mousePressed(buildMaze);
+  document.getElementById('download-text').onclick = function() {
+    downloadRepresentation();
+  };
 
-  const downloadImage = createButton('Download Maze Image');
-  downloadImage.position(mazeWidth + 50, 290);
-  downloadImage.mousePressed(downloadMaze);
+  document.getElementById('download-image').onclick = function() {
+    downloadMaze();
+  };
 
-  const downloadRep = createButton('Download Maze Representation');
-  downloadRep.position(mazeWidth + 50, 320);
-  downloadRep.mousePressed(downloadRepresentation);
-
-  uploadLabel = createElement('label', 'Upload maze to Solve');
-  uploadLabel.position(mazeWidth + 50, 370);
-  uploadInput = createFileInput(processFile);
-  uploadInput.position(mazeWidth + 50, 400);
+  createCanvas(mazeWidth, mazeHeight);
 }
 
 function draw() {
-  if(maze) maze.display();
+  if(maze) {
+    maze.display();
+    // console.log(windowWidth);
+  }
+  
 }

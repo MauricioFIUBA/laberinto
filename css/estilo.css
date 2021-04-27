@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,300');
+
+header {
+	font-size: 30px;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+
+
+}
+
+body {
+	font-family: "Open Sans";
+	background: #fdf6e3;
+	color: #002b36;
+}
+
+/*html, body {
+    height: 100%;
+}*/
+
+canvas {
+  /*margin: 0;*/
+    height: 300;
+    /*font-size: 100px;*/
+	background: gray;
+	/*display: flex;*/
+
+
+	/* This centers our sketch horizontally. */
+	/*justify-content: center;*/
+
+	/* This centers our sketch vertically. */
+	/*align-items: center;*/
+	position: absolute;
+	top: 15%;
+	left: 10%;
+
+}
+
+.opciones {
+	width: 25%;
+	position: absolute;
+	top: 20%;
+	left: 55%;
+	font-size: 25px;
+	color: #fdf6e3;
+
+
+}
+
+.opciones .iniciales{
+	background: #268bd2;
+	padding: 5px 40px 30px 25px;
+	border-radius: 10px;
+	transition: all 1s;
+}
+
+.opciones .iniciales .caja-texto {
+	margin: 20px 0px 20px 0px;
+}
+
+.opciones .iniciales button:hover {
+	color: #fdf6f3;
+
+}
+
+
+.opciones .iniciales button {
+	font-size: 30px;
+	width: 100%;
+	border-radius: 25px;
+	font-family: "Open Sans";
+	transition: all 0.5s;
+
+
+}
+
+.opciones .finales {
+	background: green;
+	margin: 20px 0px;
+	padding: 5px 0px 40px 25px;
+	border-radius: 10px;
+	transition: all 1s;
+	text-align: center;
+
+}
+
+.opciones .finales.pre-animation {
+	opacity:0;
+    max-height: 0;
+
+}
+
+.opciones .finales label{
+	padding: 5px 20px 0px 0px;
+
+}
+
+
+.opciones .finales button {
+	font-size: 16px;
+	width: 40%;
+	border-radius: 5px;
+	font-family: "Open Sans";
+	margin:0px 10px 0px;
+	float: left;
+	transition: all 0.5s;
+
+}
+
+.opciones .finales button:hover {
+	color: #fdf6f3;
+
+}
+
+
+select {
+	font-size: 20px;
+}
+
+input {
+    font-size: 20px;
+	width: 100%;
+	font-family: "Open Sans";
+	border-radius: 10px;
+    
+}
+
+
+
+@media only screen and (max-width: 1250px) {
+	.opciones {
+		font-size: 20px; 
+	}
+
+	.opciones .finales {
+	background: green;
+	margin: 20px 0px;
+	padding: 5px 40px 40px 25px;
+	border-radius: 10px;
+	transition: all 1s;
+	text-align: center;
+
+}
+
+	.opciones .finales button {
+	font-size: 12px;
+	width: 40%;
+	border-radius: 5px;
+	font-family: "Open Sans";
+	margin:2px 10px 3px;
+
+
+	
+}
+
+
+}
+
+@media only screen and (max-width: 1050px) {
+	.opciones {
+		font-size: 15px; 
+	}
+
+	.opciones .finales {
+	background: green;
+	margin: 20px 0px;
+	padding: 5px 20px 70px 10px;
+	border-radius: 10px;
+	transition: all 1s;
+	text-align: center;
+
+}
+
+	.opciones .finales button {
+	font-size: 12px;
+	width: 40%;
+	border-radius: 5px;
+	font-family: "Open Sans";
+	margin:5px 10px 5px;
+
+
+	
+}
+
+
+}

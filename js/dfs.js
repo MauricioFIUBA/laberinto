@@ -17,7 +17,8 @@
        
 */
 function MazeBuilderByDFS(mazeProps){
-  this._stack = new Stack();
+  this._stack = new Stack()
+
   this._grid = new Grid(
     mazeProps.width,
     mazeProps.height,
@@ -51,8 +52,10 @@ function MazeBuilderByDFS(mazeProps){
       } else {
         //Volvio al inicio
         this._isBuild = true;
-        alert('MAZE FINISHED!');
+        console.log(this._isBuild);
       }
+
+      return !this._isBuild;
     }
   }
 }

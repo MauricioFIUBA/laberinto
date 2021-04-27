@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css">
+<!--     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css"> -->
+    <link href="css/estilo.css" rel='stylesheet'>
 
     <script src="js/p5.min.js"></script>
     <script src="js/p5.dom.min.js"></script>
@@ -14,9 +15,61 @@
     <script src="js/wall.js"></script>
     <script src="js/dfs.js"></script>
     <script src="js/dyc.js"></script>
+    <script src="js/a_star.js"></script>
     <script src="js/main.js"></script>
-
   </head>
-  <body style="background: silver;">
+
+  <body>
+
+    <header>
+    <h1>Laberinto</h1>
+    </header>
+
+    <div class='opciones'>
+      <div class='iniciales'>
+
+        <div class='caja-texto'>
+          <label>Alto (default = 10)</label>
+          <input type="text" name="alto" id='alto'>
+        </div>
+        
+        <div class='caja-texto'>
+          <label>Ancho (default = 10)</label>
+          <input type="text" name="ancho" id='ancho'>
+        </div>
+
+        <div class='caja-texto'>
+          <label>Tipo de algoritmo:</label>
+          <select onchange="chooseBuilder(this.value)" id='tipoDeAlgoritmo'>
+            <option value="DFS">DFS</option>
+            <option value="DYC">DYC</option>
+          </select>
+        </div>
+        
+
+        <button id="start">Start</button>
+
+        <label>Cargar laberinto</label>
+        <input type="file" name="paraResolver" id='upload' lang='es'>
+
+      </div>
+
+
+      <div class='finales pre-animation'>
+        <label>Descargar laberinto:</label>
+        <span id='download-text'></span>
+
+        <span id='download-image'></span>
+
+      </div>
+      
+
+    </div>
+
+<!--     <div class='container pre-animation'>
+        <p> Probando esto </p>
+    </div> -->
+
+
   </body>
 </html>

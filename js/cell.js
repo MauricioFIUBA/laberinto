@@ -75,7 +75,7 @@ function Cell(x, y, size, walls) {
     (this._y * this._size.height) + this._size.height
   )
 
-  this.mark = (r = 150, g = 0, b = 0, alpha = 100) => {
+  this.mark = (r = 220, g = 50, b = 47, alpha = 100) => {
     noStroke();
     fill(r, g, b, alpha);
     rect(this._x * this._size.width, this._y * this._size.height, this._size.width, this._size.height)
@@ -164,6 +164,7 @@ function Cell(x, y, size, walls) {
   // Muestra los muros 'vivos' de la celda
   this.display = () => {
     stroke(255);
+    strokeWeight(5);
     if(this._walls.up) this._displayUp();
     if(this._walls.down) this._displayDown();
     if(this._walls.left) this._displayLeft();

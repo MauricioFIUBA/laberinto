@@ -123,9 +123,9 @@ function MazeBuilderByDivideAndConquer(mazeProps){
           alert('FALLO FATAL');
         }
       } else {
-        alert('MAZE FINISHED!');
         this._isBuild = true;
       }
     }
+    return !this._isBuild
   }
 }
