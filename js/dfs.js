@@ -16,46 +16,46 @@
         * termine
        
 */
-function MazeBuilderByDFS(mazeProps){
-  this._stack = new Stack()
+function MazeBuilderByDFS(mazeProps) {
+    this._stack = new Stack()
 
-  this._grid = new Grid(
-    mazeProps.width,
-    mazeProps.height,
-    { width: Math.floor(mazeWidth / mazeProps.width), height: Math.floor(mazeHeight / mazeProps.height) },
-    { up: true, down: true, left: true, right: true }
-  );
-  this.currentCell = this._grid.get(0);
-  this._isBuild = false;
+    this._grid = new Grid(
+        mazeProps.width,
+        mazeProps.height,
+        { width: Math.floor(mazeWidth / mazeProps.width), height: Math.floor(mazeHeight / mazeProps.height) },
+        { up: true, down: true, left: true, right: true }
+    );
+    this.currentCell = this._grid.get(0);
+    this._isBuild = false;
 
-  this.display = () => this._grid.display();
-  this.gridRepresentation = () => this._grid.representation();
+    this.display = () => this._grid.display();
+    this.gridRepresentation = () => this._grid.representation();
 
-  this.build = () => {
-    if (!this._isBuild) {
+    this.build = () => {
+        if (!this._isBuild) {
 
-      this.currentCell.visit();
-      const neighbourCell = this.currentCell.getRandomNotVisitedNeighbourCell(this._grid);
-      
-      if (neighbourCell) {
-        //Elige una celda vecina al azar, elimina los muros entre ambas
-        //y se mueve a esa celda
-        neighbourCell.visit();
-        this._stack.push(this.currentCell);
-        this.currentCell.removeWallBaseOnNeighbour(neighbourCell);
-        this.currentCell.highlight();
-        this.currentCell = neighbourCell; 
-      } else if(!this._stack.empty()) {
-        //Como no tiene mas vecinos sin visitar, vuelve a la celda anterior
-        this.currentCell = this._stack.pop();
-        this.currentCell.highlight();
-      } else {
-        //Volvio al inicio
-        this._isBuild = true;
-        console.log(this._isBuild);
-      }
+            this.currentCell.visit();
+            const neighbourCell = this.currentCell.getRandomNotVisitedNeighbourCell(this._grid);
 
-      return !this._isBuild;
+            if (neighbourCell) {
+                //Elige una celda vecina al azar, elimina los muros entre ambas
+                //y se mueve a esa celda
+                neighbourCell.visit();
+                this._stack.push(this.currentCell);
+                this.currentCell.removeWallBaseOnNeighbour(neighbourCell);
+                this.currentCell.highlight();
+                this.currentCell = neighbourCell;
+            } else if (!this._stack.empty()) {
+                //Como no tiene mas vecinos sin visitar, vuelve a la celda anterior
+                this.currentCell = this._stack.pop();
+                this.currentCell.highlight();
+            } else {
+                //Volvio al inicio
+                this._isBuild = true;
+                console.log(this._isBuild);
+            }
+
+            return !this._isBuild;
+        }
     }
-  }
 }

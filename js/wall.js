@@ -1,4 +1,4 @@
-function Wall(valueOfCut, firstValueX, lastValueX , firstValueY, lastValueY) {
+function Wall(valueOfCut, firstValueX, lastValueX, firstValueY, lastValueY) {
     this._firstValueX = firstValueX;
     this._lastValueX = lastValueX;
     this._firstValueY = firstValueY;
