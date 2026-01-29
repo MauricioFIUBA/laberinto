@@ -11,7 +11,7 @@ var test = 0;
 
 const builders = {
     DYC: MazeBuilderByDivideAndConquer,
-    DFS: MazeBuilderByDFS
+    DFS: MazeBuilderByDFS,
 };
 
 let heightInput = null;
@@ -27,19 +27,22 @@ function chooseBuilder(value) {
 function buildMaze(mazeWidth, mazeHeight) {
     const [width, height] = [
         parseInt(widthInput.value || '10'),
-        parseInt(heightInput.value || '10')
+        parseInt(heightInput.value || '10'),
     ];
     const selectedBuilder = builders[builderTag];
     if (selectedBuilder) {
-        console.log('Building...')
-        maze = new Maze({ width, height }, selectedBuilder, AStarMazeSolver, { mazeWidth, mazeHeight });
+        console.log('Building...');
+        maze = new Maze({ width, height }, selectedBuilder, AStarMazeSolver, {
+            mazeWidth,
+            mazeHeight,
+        });
     } else {
         alert('Builder not implemented');
     }
 }
 
 function solveMaze(mazeGridRepr) {
-    console.log('Solving...')
+    console.log('Solving...');
     maze = new Maze(mazeGridRepr, null, AStarMazeSolver);
 }
 
@@ -48,8 +51,7 @@ function downloadMaze() {
 }
 
 function downloadRepresentation() {
-    if (maze)
-        saveJSON(maze.gridRepresentation(), 'mapa-laberinto.txt');
+    if (maze) saveJSON(maze.gridRepresentation(), 'mapa-laberinto.txt');
 }
 
 function processFile(file) {
@@ -58,13 +60,15 @@ function processFile(file) {
 }
 
 function buttonFunction() {
-    var container = document.querySelector('.opciones .finales')
+    var container = document.querySelector('.opciones .finales');
 
     container.classList.add('pre-animation');
 
     // Replace spans with actual buttons
-    document.getElementById("download-text").innerHTML = '<button id="download-text">Texto</button>';
-    document.getElementById("download-image").innerHTML = '<button id="download-image">Imagen</button>';
+    document.getElementById('download-text').innerHTML =
+        '<button id="download-text">Texto</button>';
+    document.getElementById('download-image').innerHTML =
+        '<button id="download-image">Imagen</button>';
 
     document.getElementById('upload').addEventListener('change', (e) => {
         const file = e.target.files[0];
@@ -75,24 +79,23 @@ function buttonFunction() {
         reader.readAsText(file);
     });
 
-
     // Add event listeners to NEW button elements
-    document.getElementById("download-text-btn").addEventListener('click', downloadRepresentation);
-    document.getElementById("download-image-btn").addEventListener('click', downloadMaze);
-
+    document
+        .getElementById('download-text-btn')
+        .addEventListener('click', downloadRepresentation);
+    document
+        .getElementById('download-image-btn')
+        .addEventListener('click', downloadMaze);
 
     setTimeout(function () {
         container.classList.remove('pre-animation');
         // alert('esto tendria que tardar');
     }, 100);
-
-
-
 }
 
 function windowResized() {
-    mazeWidth = windowWidth / division
-    mazeHeight = windowWidth / division
+    mazeWidth = windowWidth / division;
+    mazeHeight = windowWidth / division;
     resizeCanvas(mazeWidth, mazeHeight);
 }
 
@@ -101,9 +104,9 @@ function setup() {
     mazeHeight = windowWidth / division;
     frameRate(24);
 
-    heightInput = document.getElementById('alto')
+    heightInput = document.getElementById('alto');
 
-    widthInput = document.getElementById('ancho')
+    widthInput = document.getElementById('ancho');
 
     builderTag = document.getElementById('tipoDeAlgoritmo').value;
 
@@ -127,5 +130,4 @@ function draw() {
         maze.display();
         // console.log(windowWidth);
     }
-
 }
