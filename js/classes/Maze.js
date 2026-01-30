@@ -90,10 +90,11 @@ function Maze(props, builder, solver, dim) {
                 alert('MAZE FINISHED!');
                 buttonFunction();
             }
-        } else if (framesExtras > 0) {
+        } else {
+            // Always display the grid after building is complete
             this._builder.display();
-            framesExtras--;
         }
+        
         if (isSolving) {
             this._solver.solve();
             this._solver.display();
