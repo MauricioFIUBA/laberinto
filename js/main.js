@@ -1,13 +1,12 @@
 let canvas = null;
 
-var division = 2.5;
-var mazeWidth = 0;
-var mazeHeight = 0;
+let division = 2.5;
+let mazeWidth = 0;
+let mazeHeight = 0;
 
 let maze = null;
 let builderTag = 'null';
 
-var test = 0;
 
 const builders = {
     DYC: MazeBuilderByDivideAndConquer,
@@ -16,15 +15,28 @@ const builders = {
 
 let heightInput = null;
 let widthInput = null;
-let builderSelect = null;
-
-let uploadInput = null;
 
 function chooseBuilder(value) {
     builderTag = value;
 }
 
-function buildMaze(mazeWidth, mazeHeight) {
+function hideDownloadButtons() {
+    const container = document.querySelector('.opciones .finales');
+    container.classList.add('pre-animation');
+    
+    // Reset buttons back to empty spans
+    const downloadTextBtn = document.getElementById('download-text');
+    const downloadImageBtn = document.getElementById('download-image');
+    
+    if (downloadTextBtn.tagName === 'BUTTON') {
+        downloadTextBtn.outerHTML = '<span id="download-text"></span>';
+    }
+    if (downloadImageBtn.tagName === 'BUTTON') {
+        downloadImageBtn.outerHTML = '<span id="download-image"></span>';
+    }
+}
+
+function buildMaze(canvasWidth, canvasHeight) {
     const [width, height] = [
         parseInt(widthInput.value || '10'),
         parseInt(heightInput.value || '10'),
@@ -32,18 +44,22 @@ function buildMaze(mazeWidth, mazeHeight) {
     const selectedBuilder = builders[builderTag];
     if (selectedBuilder) {
         console.log('Building...');
+        hideDownloadButtons(); // Hide buttons when starting new maze
         maze = new Maze({ width, height }, selectedBuilder, AStarMazeSolver, {
-            mazeWidth,
-            mazeHeight,
+            mazeWidth: canvasWidth,
+            mazeHeight: canvasHeight,
         });
     } else {
         alert('Builder not implemented');
     }
 }
 
-function solveMaze(mazeGridRepr) {
+function solveMaze(asciiMaze) {
     console.log('Solving...');
-    maze = new Maze(mazeGridRepr, null, AStarMazeSolver);
+    maze = Maze.fromAscii(asciiMaze, AStarMazeSolver, {
+        mazeWidth,
+        mazeHeight,
+    });
 }
 
 function downloadMaze() {
@@ -51,46 +67,44 @@ function downloadMaze() {
 }
 
 function downloadRepresentation() {
-    if (maze) saveJSON(maze.gridRepresentation(), 'mapa-laberinto.txt');
+    if (maze) {
+        const asciiMaze = maze.toAscii();
+        const blob = new Blob([asciiMaze], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'laberinto.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
 }
 
 function processFile(file) {
-    const mazeGridJson = file.data;
-    solveMaze(JSON.parse(mazeGridJson));
+    const asciiMaze = file.data;
+    solveMaze(asciiMaze);
 }
 
 function buttonFunction() {
-    var container = document.querySelector('.opciones .finales');
+    const container = document.querySelector('.opciones .finales');
 
-    container.classList.add('pre-animation');
+    // Replace spans with buttons using outerHTML
+    const downloadTextSpan = document.getElementById('download-text');
+    const downloadImageSpan = document.getElementById('download-image');
 
-    // Replace spans with actual buttons
-    document.getElementById('download-text').innerHTML =
-        '<button id="download-text">Texto</button>';
-    document.getElementById('download-image').innerHTML =
-        '<button id="download-image">Imagen</button>';
+    downloadTextSpan.outerHTML = '<button id="download-text">Texto</button>';
+    downloadImageSpan.outerHTML = '<button id="download-image">Imagen</button>';
 
-    document.getElementById('upload').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            processFile({ data: event.target.result });
-        };
-        reader.readAsText(file);
-    });
+    // Re-attach click handlers to the new button elements
+    document.getElementById('download-text').onclick = function () {
+        downloadRepresentation();
+    };
 
-    // Add event listeners to NEW button elements
-    document
-        .getElementById('download-text-btn')
-        .addEventListener('click', downloadRepresentation);
-    document
-        .getElementById('download-image-btn')
-        .addEventListener('click', downloadMaze);
+    document.getElementById('download-image').onclick = function () {
+        downloadMaze();
+    };
 
-    setTimeout(function () {
-        container.classList.remove('pre-animation');
-        // alert('esto tendria que tardar');
-    }, 100);
+    // Remove pre-animation class to show the buttons
+    container.classList.remove('pre-animation');
 }
 
 function windowResized() {
@@ -105,24 +119,24 @@ function setup() {
     frameRate(24);
 
     heightInput = document.getElementById('alto');
-
     widthInput = document.getElementById('ancho');
-
     builderTag = document.getElementById('tipoDeAlgoritmo').value;
 
     document.getElementById('start').onclick = function () {
         buildMaze(mazeWidth, mazeHeight);
     };
 
-    document.getElementById('download-text').onclick = function () {
-        downloadRepresentation();
-    };
+    // Move file upload listener to setup (only needs to be set once)
+    document.getElementById('upload').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            processFile({ data: event.target.result });
+        };
+        reader.readAsText(file);
+    });
 
-    document.getElementById('download-image').onclick = function () {
-        downloadMaze();
-    };
-
-    createCanvas(mazeWidth, mazeHeight);
+    canvas = createCanvas(mazeWidth, mazeHeight);
 }
 
 function draw() {

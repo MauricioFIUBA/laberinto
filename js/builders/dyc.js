@@ -11,7 +11,7 @@
     * La condicion de corte es que el tamanio del sub laberinto sea de alto o ancho menor a 1
 */
 function MazeBuilderByDivideAndConquer(mazeProps) {
-    this._walls = new Queue();
+    this._walls = [];
     this._grid = new Grid(
         mazeProps.width,
         mazeProps.height,
@@ -67,14 +67,14 @@ function MazeBuilderByDivideAndConquer(mazeProps) {
     /***********Parte principial del Divide y Conquista***********/
 
     this._divideVertical = (x, x2, y, y2) => {
-        this._walls.enqueue(new Wall('vertical', x, x2, y, y2));
+        this._walls.push(new Wall('vertical', x, x2, y, y2));
         const half = floor((x2 + x) / 2);
         this._chargeWalls(x, half, y, y2);
         this._chargeWalls(half + 1, x2, y, y2);
     };
 
     this._divideHorizontal = (x, x2, y, y2) => {
-        this._walls.enqueue(new Wall('horizontal', x, x2, y, y2));
+        this._walls.push(new Wall('horizontal', x, x2, y, y2));
         const half = floor((y2 + y) / 2);
         this._chargeWalls(x, x2, y, half);
         this._chargeWalls(x, x2, half + 1, y2);
@@ -110,7 +110,7 @@ function MazeBuilderByDivideAndConquer(mazeProps) {
                 this._isCharge = true;
             }
 
-            var wall = this._walls.dequeue();
+            var wall = this._walls.shift();
             if (wall) {
                 if (wall.vertical()) {
                     this._buildMiddleVerticalWall(

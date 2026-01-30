@@ -17,7 +17,7 @@
        
 */
 function MazeBuilderByDFS(mazeProps) {
-    this._stack = new Stack();
+    this._stack = [];
 
     this._grid = new Grid(
         mazeProps.width,
@@ -48,7 +48,7 @@ function MazeBuilderByDFS(mazeProps) {
                 this.currentCell.removeWallBaseOnNeighbour(neighbourCell);
                 this.currentCell.highlight();
                 this.currentCell = neighbourCell;
-            } else if (!this._stack.empty()) {
+            } else if (!(this._stack.length === 0)){
                 //Como no tiene mas vecinos sin visitar, vuelve a la celda anterior
                 this.currentCell = this._stack.pop();
                 this.currentCell.highlight();

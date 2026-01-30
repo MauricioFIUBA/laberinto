@@ -6,16 +6,16 @@ function Grid(numOfCols, numOfRows, cellDimensions, walls, representation) {
 
     if (this._representation.length > 0) {
         for (let i = 0; i < this._representation.length; i++) {
+            const cellData = this._representation[i];
             this._representation[i] = new Cell(
-                this._representation[i]._x,
-                this._representation[i]._y,
-                this._representation[i]._size,
-                walls ? { ...walls } : this._representation[i]._walls
+                cellData._x,
+                cellData._y,
+                cellData._size || this._cellDimensions,
+                cellData._walls
             );
         }
-    }
-
-    if (this._representation.length === 0) {
+    } else if (walls) {
+        // Only create new cells if walls template is provided
         for (let y = 0; y < this._numOfRows; y++) {
             for (let x = 0; x < this._numOfCols; x++) {
                 this._representation.push(

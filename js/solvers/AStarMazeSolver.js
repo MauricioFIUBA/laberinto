@@ -1,20 +1,20 @@
 // https://en.wikipedia.org/wiki/A*_search_algorithm
 function AStarMazeSolver(mazeProps) {
-    this._grid = new Grid(
-        mazeProps.width,
-        mazeProps.height,
-        {
-            width: Math.floor(mazeWidth / mazeProps.width),
-            height: Math.floor(mazeHeight / mazeProps.height),
-        },
-        { up: true, down: true, left: true, right: true }
-    );
-    // mazeProps.width,
-    // mazeProps.height,
-    // mazeProps.cell_size,
-    // null,
-    // mazeProps.grid
-    // );
+    // Use provided grid or create new one
+    if (mazeProps.grid) {
+        this._grid = mazeProps.grid;
+    } else {
+        this._grid = new Grid(
+            mazeProps.width,
+            mazeProps.height,
+            {
+                width: Math.floor(mazeWidth / mazeProps.width),
+                height: Math.floor(mazeHeight / mazeProps.height),
+            },
+            { up: true, down: true, left: true, right: true }
+        );
+    }
+    
     this._openSet = [this._grid.first()];
     this._closeSet = [];
     this._pathSolution = [];
