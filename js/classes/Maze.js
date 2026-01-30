@@ -7,8 +7,8 @@
  * @param {{mazeWidth: number, mazeHeight: number}} dim - Canvas dimensions
  */
 function Maze(props, builder, solver, dim) {
-    /** @type {p5.Renderer} */
-    canvas = createCanvas(dim.mazeWidth, dim.mazeHeight);
+    // Resize existing canvas instead of creating new one
+    resizeCanvas(dim.mazeWidth, dim.mazeHeight);
     
     this._builder = builder ? new builder(props) : null;
     this._solver = solver ? new solver(props) : null;
@@ -80,6 +80,8 @@ function Maze(props, builder, solver, dim) {
 
     // Display the maze
     this.display = () => {
+        background(15, 52, 96); // Match --bg-card color
+
         if (isBuilding) {
             isBuilding = this._builder.build();
             this._builder.display();
@@ -114,8 +116,8 @@ Maze.fromAscii = function(asciiString, solver, dim) {
     const numCols = Math.floor((asciiWidth - 1) / 2);
     const numRows = Math.floor((asciiHeight - 1) / 2);
     
-    const cellWidth = Math.floor(dim.mazeWidth / numCols);
-    const cellHeight = Math.floor(dim.mazeHeight / numRows);
+    const cellWidth = dim.mazeWidth / numCols;
+    const cellHeight = dim.mazeHeight / numRows;
     
     // Create grid representation
     const gridCells = [];
@@ -144,7 +146,8 @@ Maze.fromAscii = function(asciiString, solver, dim) {
     // Create a special maze instance for solving
     const mazeInstance = Object.create(Maze.prototype);
     
-    canvas = createCanvas(dim.mazeWidth, dim.mazeHeight);
+    // Resize existing canvas instead of creating new one
+    resizeCanvas(dim.mazeWidth, dim.mazeHeight);
     
     // Create grid from parsed data
     const grid = new Grid(numCols, numRows, { width: cellWidth, height: cellHeight }, null, gridCells);
@@ -155,10 +158,19 @@ Maze.fromAscii = function(asciiString, solver, dim) {
     let isSolving = true;
     
     mazeInstance.display = () => {
-        grid.display();
+        background(15, 52, 96); // Match --bg-card color
+        
         if (isSolving) {
+            // solve() returns true while still solving, false when done
             solverInstance.solve();
+            if (solverInstance._isSolved()) {
+                isSolving = false;
+                console.log('Maze solving complete!');
+            }
         }
+        
+        // Always display the solver's progress
+        solverInstance.display();
     };
     
     mazeInstance.toAscii = () => asciiString;

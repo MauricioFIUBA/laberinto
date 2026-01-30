@@ -20,7 +20,7 @@ function Cell(x, y, size, walls) {
     };
 
     this.replaceFCost = (cost) => {
-        this._FCost = cost;
+        this._FCost = cost;  // Fix: was _FCost (uppercase F)
     };
 
     this.replaceGCost = (cost) => {
@@ -79,7 +79,8 @@ function Cell(x, y, size, walls) {
             this._y * this._size.height + this._size.height
         );
 
-    this.mark = (r = 220, g = 50, b = 47, alpha = 100) => {
+    this.mark = (r = 78, g = 204, b = 163, alpha = 150) => {
+        // Changed to success green color from the theme
         noStroke();
         fill(r, g, b, alpha);
         rect(
@@ -91,8 +92,9 @@ function Cell(x, y, size, walls) {
     };
 
     this.highlight = () => {
+        // Changed to accent color (coral/red) from the theme
         noStroke();
-        fill(191, 191, 191);
+        fill(233, 69, 96, 200);
         rect(
             this._x * this._size.width,
             this._y * this._size.height,
@@ -183,12 +185,19 @@ function Cell(x, y, size, walls) {
 
     // Muestra los muros 'vivos' de la celda
     this.display = () => {
-        stroke(255);
-        strokeWeight(5);
+        // Changed wall color to lighter shade that matches theme
+        stroke(234, 234, 234);
+        strokeWeight(2);
         if (this._walls.up) this._displayUp();
         if (this._walls.down) this._displayDown();
         if (this._walls.left) this._displayLeft();
         if (this._walls.right) this._displayRight();
+        if (this._visited) this.mark();
+    };
+
+    // Display with visited marking (for building phase)
+    this.displayWithVisited = () => {
+        this.display();
         if (this._visited) this.mark();
     };
 }

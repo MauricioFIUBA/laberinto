@@ -7,14 +7,12 @@ let mazeHeight = 0;
 let maze = null;
 let builderTag = 'null';
 
+let sizeInput = null;
 
 const builders = {
     DYC: MazeBuilderByDivideAndConquer,
     DFS: MazeBuilderByDFS,
 };
-
-let heightInput = null;
-let widthInput = null;
 
 function chooseBuilder(value) {
     builderTag = value;
@@ -37,15 +35,17 @@ function hideDownloadButtons() {
 }
 
 function buildMaze(canvasWidth, canvasHeight) {
-    const [width, height] = [
-        parseInt(widthInput.value || '10'),
-        parseInt(heightInput.value || '10'),
-    ];
+    const size = parseInt(sizeInput.value || '10');
     const selectedBuilder = builders[builderTag];
     if (selectedBuilder) {
         console.log('Building...');
+        // Clear the current maze and canvas before starting new one
+        maze = null;
+        clear();
+        background(15, 52, 96); // Match --bg-card color
+        
         hideDownloadButtons(); // Hide buttons when starting new maze
-        maze = new Maze({ width, height }, selectedBuilder, AStarMazeSolver, {
+        maze = new Maze({ width: size, height: size }, selectedBuilder, AStarMazeSolver, {
             mazeWidth: canvasWidth,
             mazeHeight: canvasHeight,
         });
@@ -108,19 +108,24 @@ function buttonFunction() {
 }
 
 function windowResized() {
-    mazeWidth = windowWidth / division;
-    mazeHeight = windowWidth / division;
+    mazeWidth = Math.min(windowWidth * 0.55, 700);
+    mazeHeight = Math.min(windowWidth * 0.55, 700);
     resizeCanvas(mazeWidth, mazeHeight);
 }
 
 function setup() {
-    mazeWidth = windowWidth / division;
-    mazeHeight = windowWidth / division;
+    mazeWidth = Math.min(windowWidth * 0.55, 700);
+    mazeHeight = Math.min(windowWidth * 0.55, 700);
     frameRate(24);
 
-    heightInput = document.getElementById('alto');
-    widthInput = document.getElementById('ancho');
+    sizeInput = document.getElementById('tamano');
+    const sizeValueDisplay = document.getElementById('size-value');
     builderTag = document.getElementById('tipoDeAlgoritmo').value;
+
+    // Update displayed value when slider changes
+    sizeInput.addEventListener('input', (e) => {
+        sizeValueDisplay.textContent = e.target.value;
+    });
 
     document.getElementById('start').onclick = function () {
         buildMaze(mazeWidth, mazeHeight);
@@ -137,11 +142,12 @@ function setup() {
     });
 
     canvas = createCanvas(mazeWidth, mazeHeight);
+    canvas.parent('canvas-container');
 }
 
 function draw() {
     if (maze) {
+        background(15, 52, 96); // Match --bg-card color
         maze.display();
-        // console.log(windowWidth);
     }
 }

@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="UTF-8">
-<!--     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laberinto</title>
     <link href="css/style.css" rel='stylesheet'>
 
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
@@ -24,56 +25,44 @@
   </head>
 
   <body>
-
     <header>
-    <h1>Laberinto</h1>
+      <h1>Laberinto</h1>
     </header>
 
-    <div class='opciones'>
-      <div class='iniciales'>
+    <div class="main-container">
+      <div id="canvas-container"></div>
 
-        <div class='caja-texto'>
-          <label>Alto (default = 10)</label>
-          <input type="text" name="alto" id='alto'>
+      <div class='opciones'>
+        <div class='iniciales'>
+          <div class='caja-texto'>
+            <label>Tamaño del laberinto: <span id="size-value">10</span></label>
+            <input type="range" name="tamano" id='tamano' min="10" max="80" step="5" value="10">
+          </div>
+
+          <div class='caja-texto'>
+            <label>Tipo de algoritmo</label>
+            <select onchange="chooseBuilder(this.value)" id='tipoDeAlgoritmo'>
+              <option value="DFS">DFS (Depth-First Search)</option>
+              <option value="DYC">DYC (Divide & Conquer)</option>
+            </select>
+          </div>
+
+          <button id="start">Generar Laberinto</button>
+
+          <div class="file-upload-section">
+            <label>Cargar laberinto existente</label>
+            <input type="file" name="paraResolver" id='upload' accept=".txt">
+          </div>
         </div>
-        
-        <div class='caja-texto'>
-          <label>Ancho (default = 10)</label>
-          <input type="text" name="ancho" id='ancho'>
+
+        <div class='finales pre-animation'>
+          <label>Descargar laberinto</label>
+          <div class="button-group">
+            <span id='download-text'></span>
+            <span id='download-image'></span>
+          </div>
         </div>
-
-        <div class='caja-texto'>
-          <label>Tipo de algoritmo:</label>
-          <select onchange="chooseBuilder(this.value)" id='tipoDeAlgoritmo'>
-            <option value="DFS">DFS</option>
-            <option value="DYC">DYC</option>
-          </select>
-        </div>
-        
-
-        <button id="start">Start</button>
-
-        <label>Cargar laberinto</label>
-        <input type="file" name="paraResolver" id='upload' lang='es'>
-
       </div>
-
-
-      <div class='finales pre-animation'>
-        <label>Descargar laberinto:</label>
-        <span id='download-text'></span>
-
-        <span id='download-image'></span>
-
-      </div>
-      
-
     </div>
-
-<!--     <div class='container pre-animation'>
-        <p> Probando esto </p>
-    </div> -->
-
-
   </body>
 </html>

@@ -16,8 +16,8 @@ function MazeBuilderByDivideAndConquer(mazeProps) {
         mazeProps.width,
         mazeProps.height,
         {
-            width: Math.floor(mazeWidth / mazeProps.width),
-            height: Math.floor(mazeHeight / mazeProps.height),
+            width: mazeWidth / mazeProps.width,
+            height: mazeHeight / mazeProps.height,
         },
         { up: false, down: false, left: false, right: false }
     );
